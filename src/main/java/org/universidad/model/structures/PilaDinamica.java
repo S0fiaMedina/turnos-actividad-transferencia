@@ -1,4 +1,4 @@
-package org.universidad.model.estructuras;
+package org.universidad.model.structures;
 
 import java.util.ArrayList;
 import java.util.List;

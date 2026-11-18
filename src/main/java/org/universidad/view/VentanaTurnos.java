@@ -2,12 +2,10 @@ package org.universidad.view;
 
 import org.universidad.logic.GestorTurnos;
 import org.universidad.model.Turno;
-import org.universidad.utilities.Constants;
 import org.universidad.utilities.ViewUtilities;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.View;
 import java.awt.*;
 import java.util.List;
 
@@ -18,6 +16,14 @@ public class VentanaTurnos extends JFrame {
     private final JLabel lblPendientes = new JLabel("0");
     private final JLabel lblAtendidos = new JLabel("0");
 
+    /**
+     * Construye e inicializa la ventana principal del sistema de gestión de turnos.
+     * Configura los componentes visuales, el encabezado, la tabla de turnos activos
+     * y el menú de opciones.
+     *
+     * @param gestor gestor encargado de administrar las operaciones de los turnos
+     */
+
     public VentanaTurnos(GestorTurnos gestor) {
         super("Sistema de Gestión de Turnos – Universidad Compensar");
         this.gestor = gestor;
@@ -25,11 +31,11 @@ public class VentanaTurnos extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(850, 550);
         setLocationRelativeTo(null);
-        getContentPane().setBackground(Constants.BLANCO);
+        getContentPane().setBackground(ViewUtilities.BLANCO);
         setLayout(new BorderLayout(10, 10));
 
         JPanel encabezado = new JPanel(new GridLayout(1, 2, 10, 0));
-        encabezado.setBackground(Constants.NARANJA);
+        encabezado.setBackground(ViewUtilities.NARANJA);
         encabezado.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         encabezado.add(ViewUtilities.crearIndicador("Turnos pendientes", lblPendientes));
         encabezado.add(ViewUtilities.crearIndicador("Turnos atendidos", lblAtendidos));
@@ -42,19 +48,19 @@ public class VentanaTurnos extends JFrame {
         };
         JTable tabla = new JTable(modeloTabla);
         tabla.setRowHeight(24);
-        tabla.setSelectionBackground(Constants.NARANJA_CLARO);
-        tabla.setSelectionForeground(Constants.TEXTO);
-        tabla.getTableHeader().setBackground(Constants.NARANJA);
-        tabla.getTableHeader().setForeground(Constants.BLANCO);
+        tabla.setSelectionBackground(ViewUtilities.NARANJA_CLARO);
+        tabla.setSelectionForeground(ViewUtilities.TEXTO);
+        tabla.getTableHeader().setBackground(ViewUtilities.NARANJA);
+        tabla.getTableHeader().setForeground(ViewUtilities.BLANCO);
         tabla.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 13));
 
         JScrollPane scroll = new JScrollPane(tabla);
         scroll.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Constants.NARANJA), "Turnos activos"));
+                BorderFactory.createLineBorder(ViewUtilities.NARANJA), "Turnos activos"));
         add(scroll, BorderLayout.CENTER);
 
         JPanel panelMenu = new JPanel(new GridLayout(6, 1, 5, 5));
-        panelMenu.setBackground(Constants.BLANCO);
+        panelMenu.setBackground(ViewUtilities.BLANCO);
         panelMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] opciones = {
@@ -76,6 +82,12 @@ public class VentanaTurnos extends JFrame {
         actualizarVista();
     }
 
+    /**
+     * Ejecuta la acción correspondiente a la opción seleccionada en el menú principal.
+     * Gestiona las excepciones generadas durante la ejecución de las operaciones.
+     *
+     * @param opcion número de la opción seleccionada por el usuario
+     */
     private void ejecutarOpcion(int opcion) {
         try {
             switch (opcion) {
@@ -99,6 +111,11 @@ public class VentanaTurnos extends JFrame {
         }
     }
 
+    /**
+     * Solicita los datos del estudiante y el motivo de la asesoría para registrar
+     * un nuevo turno en el sistema. Posteriormente, actualiza la vista y muestra
+     * el código asignado al turno.
+     */
     private void solicitarTurno() {
         String nombre = JOptionPane.showInputDialog(this, "Nombre del estudiante:");
         if (nombre == null) return;
@@ -112,6 +129,10 @@ public class VentanaTurnos extends JFrame {
                 "Turno creado", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Solicita el nombre del operario y asigna el siguiente turno pendiente.
+     * Actualiza la vista y muestra la información del turno asignado.
+     */
     private void asignarOperario() {
         String operario = JOptionPane.showInputDialog(this, "Nombre del operario:");
         if (operario == null) return;
@@ -126,6 +147,12 @@ public class VentanaTurnos extends JFrame {
                 "Turno " + turno.getCodigo() + " asignado a " + turno.getOperario() + ".");
     }
 
+    /**
+     * Solicita el código de un turno para finalizar su atención.
+     * Una vez finalizada, actualiza la vista y muestra un mensaje de confirmación.
+     *
+     * @throws Exception si ocurre un error durante la finalización de la atención
+     */
     private void atenderTurno() throws Exception {
         String codigo = JOptionPane.showInputDialog(this, "Código del turno a finalizar (ej. T0001):");
         if (codigo == null) return;
@@ -136,6 +163,11 @@ public class VentanaTurnos extends JFrame {
                 "Turno " + turno.getCodigo() + " atendido y enviado al historial.");
     }
 
+    /**
+     * Consulta y muestra el historial de turnos atendidos, incluyendo su código,
+     * nombre del estudiante, motivo y operario asignado.
+     * Los turnos se presentan en el orden devuelto por el gestor.
+     */
     private void verHistorial() {
         StringBuilder sb = new StringBuilder();
         List<Turno> historial = gestor.listarHistorial();
@@ -156,6 +188,10 @@ public class VentanaTurnos extends JFrame {
                 "Historial (último atendido primero)", JOptionPane.PLAIN_MESSAGE);
     }
 
+    /**
+     * Actualiza la información visual del sistema, recargando la tabla de turnos
+     * activos y los indicadores de turnos pendientes y atendidos.
+     */
     private void actualizarVista() {
         modeloTabla.setRowCount(0);
         for (Turno t : gestor.listarActivos()) {

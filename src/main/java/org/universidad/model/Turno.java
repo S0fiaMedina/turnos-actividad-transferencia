@@ -3,6 +3,7 @@ package org.universidad.model;
 import org.universidad.utilities.EstadoTurno;
 
 public class Turno {
+
     private final String codigo;
     private final String nombreEstudiante;
     private final String motivo;

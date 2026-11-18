@@ -1,4 +1,4 @@
-package org.universidad.model.estructuras;
+package org.universidad.model.structures;
 
 /** Nodo genérico reutilizado por las estructuras dinámicas. */
 public class Nodo<T> {

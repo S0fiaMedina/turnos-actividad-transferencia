@@ -2,9 +2,9 @@ package org.universidad.repository;
 
 import org.universidad.utilities.EstadoTurno;
 
-import org.universidad.model.estructuras.ColaDinamica;
-import org.universidad.model.estructuras.ListaEnlazada;
-import org.universidad.model.estructuras.PilaDinamica;
+import org.universidad.model.structures.ColaDinamica;
+import org.universidad.model.structures.ListaEnlazada;
+import org.universidad.model.structures.PilaDinamica;
 import org.universidad.model.Turno;
 
 import java.util.List;
