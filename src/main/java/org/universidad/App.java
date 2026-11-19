@@ -6,10 +6,7 @@ import org.universidad.view.VentanaTurnos;
 
 import javax.swing.*;
 
-/**
- * Hello world!
- *
- */
+
 public class App 
 {
     static void main(String[] args) {
